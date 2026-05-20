@@ -1,0 +1,22 @@
+/* motomotus-global-fixes.css */
+/* Fix blue outline on mobile videos */
+video, iframe, .elementor-video, .elementor-background-video-hosted {
+    outline: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Ensure Google Maps pointer style overrides */
+.elementor-heading-title[title="Open in Google Maps"]:hover {
+    opacity: 0.8;
+}
+
+/* Site-wide background consistency */
+body {
+    background-color: #e2e2e2 !important;
+}
+
+/* Mobile nav dropdown panel background */
+.e-n-menu-wrapper,
+.e-n-menu-dropdown {
+    background-color: #e2e2e2 !important;
+}
