@@ -63,36 +63,95 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    // Define closeModal early so it is available for all handlers
+    const closeModal = () => {
+        if (typeof gsap !== 'undefined') {
+            gsap.to(modal, {
+                opacity: 0,
+                duration: 0.3,
+                onComplete: () => {
+                    modal.style.display = 'none';
+                    // Clear modal content safely
+                    while (modalContent.firstChild) {
+                        modalContent.removeChild(modalContent.firstChild);
+                    }
+                    modalCaption.textContent = '';
+                    document.body.style.overflow = '';
+                    // Return focus to the last focused item
+                    if (lastFocusedItem) lastFocusedItem.focus();
+                }
+            });
+        } else {
+            modal.style.display = 'none';
+            while (modalContent.firstChild) {
+                modalContent.removeChild(modalContent.firstChild);
+            }
+            modalCaption.textContent = '';
+            document.body.style.overflow = '';
+            if (lastFocusedItem) lastFocusedItem.focus();
+        }
+    };
+
+    // Track the last focused item for focus restoration
+    let lastFocusedItem = null;
+
+    // Fix #4: Escape key handler - use capturing phase to catch events before iframe
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape' && modal.style.display === 'flex') {
+            e.preventDefault();
             closeModal();
         }
-    });
+    }, true);
 
+    // Open modal helper (used by both click and keyboard)
+    const openModal = (item) => {
+        const videoUrl = item.getAttribute('data-video');
+        const caption = item.getAttribute('data-caption');
+        if (!videoUrl) return;
+
+        lastFocusedItem = item;
+        embedVideo(videoUrl);
+        modalCaption.textContent = caption || '';
+
+        modal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+        if (typeof gsap !== 'undefined') {
+            gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        } else {
+            modal.style.opacity = '1';
+        }
+
+        // Focus the close button for keyboard navigation
+        if (modalClose) modalClose.focus();
+    };
+
+    // Fix #3: Add click and keyboard handlers to grid items
     items.forEach(item => {
+        // Make items keyboard-focusable
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', item.querySelector('.motomotus-title')?.textContent || 'View project');
+
         item.addEventListener('click', (e) => {
             e.preventDefault();
-            const videoUrl = item.getAttribute('data-video');
-            const caption = item.getAttribute('data-caption');
-            if (!videoUrl) return;
+            openModal(item);
+        });
 
-            embedVideo(videoUrl);
-            // Use textContent for caption to prevent stored XSS
-            modalCaption.textContent = caption || '';
-
-            modal.style.display = 'flex';
-            document.body.style.overflow = 'hidden';
-            if (typeof gsap !== 'undefined') {
-                gsap.fromTo(modal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
-            } else {
-                modal.style.opacity = '1';
+        // Keyboard: Enter/Space to activate
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openModal(item);
             }
         });
     });
 
     if(filterBtns) {
         filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
+            // Make filter buttons keyboard-focusable
+            btn.setAttribute('tabindex', '0');
+
+            const applyFilter = () => {
                 const filter = btn.getAttribute('data-filter');
                 filterBtns.forEach(b => b.classList.remove('active'));
                 btn.classList.add('active');
@@ -111,34 +170,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         item.style.opacity = isVisible ? '1' : '0';
                     }
                 });
+            };
+
+            btn.addEventListener('click', applyFilter);
+            btn.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault();
+                    applyFilter();
+                }
             });
         });
     }
-
-    const closeModal = () => {
-        if (typeof gsap !== 'undefined') {
-            gsap.to(modal, {
-                opacity: 0,
-                duration: 0.3,
-                onComplete: () => {
-                    modal.style.display = 'none';
-                    // Clear modal content safely
-                    while (modalContent.firstChild) {
-                        modalContent.removeChild(modalContent.firstChild);
-                    }
-                    modalCaption.textContent = '';
-                    document.body.style.overflow = '';
-                }
-            });
-        } else {
-            modal.style.display = 'none';
-            while (modalContent.firstChild) {
-                modalContent.removeChild(modalContent.firstChild);
-            }
-            modalCaption.textContent = '';
-            document.body.style.overflow = '';
-        }
-    };
 
     if (modalClose) modalClose.addEventListener('click', closeModal);
     if (modalOverlay) modalOverlay.addEventListener('click', closeModal);
