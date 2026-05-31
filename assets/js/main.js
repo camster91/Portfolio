@@ -16,21 +16,51 @@ document.addEventListener('DOMContentLoaded', function() {
     const modalClose = modal.querySelector('.motomotus-modal-close');
     const modalOverlay = modal.querySelector('.motomotus-modal-overlay');
 
-    function getEmbedUrl(url) {
-        let videoHtml = '';
-        const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/i;
+    // HTML-escape a string to prevent XSS when used in attribute values
+    function escapeAttr(str) {
+        return str.replace(/&/g, '&amp;')
+                  .replace(/"/g, '&quot;')
+                  .replace(/'/g, '&#39;')
+                  .replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;');
+    }
+
+    function embedVideo(url) {
+        // Clear existing content safely
+        while (modalContent.firstChild) {
+            modalContent.removeChild(modalContent.firstChild);
+        }
+
+        const ytRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^\"&?\/\s]{11})/i;
         const ytMatch = url.match(ytRegex);
         const vimeoRegex = /(?:vimeo\.com\/|player\.vimeo\.com\/video\/)([0-9]+)/i;
         const vimeoMatch = url.match(vimeoRegex);
 
         if (ytMatch && ytMatch[1]) {
-            videoHtml = `<iframe src="https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1&rel=0" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://www.youtube.com/embed/' + encodeURIComponent(ytMatch[1]) + '?autoplay=1&rel=0';
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'autoplay; fullscreen');
+            iframe.setAttribute('allowfullscreen', '');
+            modalContent.appendChild(iframe);
         } else if (vimeoMatch && vimeoMatch[1]) {
-            videoHtml = `<iframe src="https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>`;
+            const iframe = document.createElement('iframe');
+            iframe.src = 'https://player.vimeo.com/video/' + encodeURIComponent(vimeoMatch[1]) + '?autoplay=1';
+            iframe.setAttribute('frameborder', '0');
+            iframe.setAttribute('allow', 'autoplay; fullscreen');
+            iframe.setAttribute('allowfullscreen', '');
+            modalContent.appendChild(iframe);
         } else {
-            videoHtml = `<video src="${url}" controls autoplay playsinline></video>`;
+            // Only allow http/https URLs for video src
+            if (/^https?:\/\//i.test(url)) {
+                const video = document.createElement('video');
+                video.src = url;
+                video.setAttribute('controls', '');
+                video.setAttribute('autoplay', '');
+                video.setAttribute('playsinline', '');
+                modalContent.appendChild(video);
+            }
         }
-        return videoHtml;
     }
 
     document.addEventListener('keydown', (e) => {
@@ -46,8 +76,9 @@ document.addEventListener('DOMContentLoaded', function() {
             const caption = item.getAttribute('data-caption');
             if (!videoUrl) return;
 
-            modalContent.innerHTML = getEmbedUrl(videoUrl);
-            modalCaption.innerHTML = caption ? `<div class="motomotus-caption-inner">${caption}</div>` : '';
+            embedVideo(videoUrl);
+            // Use textContent for caption to prevent stored XSS
+            modalCaption.textContent = caption || '';
 
             modal.style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -91,15 +122,20 @@ document.addEventListener('DOMContentLoaded', function() {
                 duration: 0.3,
                 onComplete: () => {
                     modal.style.display = 'none';
-                    modalContent.innerHTML = '';
-                    modalCaption.innerHTML = '';
+                    // Clear modal content safely
+                    while (modalContent.firstChild) {
+                        modalContent.removeChild(modalContent.firstChild);
+                    }
+                    modalCaption.textContent = '';
                     document.body.style.overflow = '';
                 }
             });
         } else {
             modal.style.display = 'none';
-            modalContent.innerHTML = '';
-            modalCaption.innerHTML = '';
+            while (modalContent.firstChild) {
+                modalContent.removeChild(modalContent.firstChild);
+            }
+            modalCaption.textContent = '';
             document.body.style.overflow = '';
         }
     };
