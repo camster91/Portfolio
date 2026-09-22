@@ -1,4 +1,42 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Add the approved MOTOMOTUS × ARKETYPE lockup to all Colour landing and
+    // artist pages. CSS reserves the final height before this enhancement runs
+    // so the header cannot jump when the supplied artwork is inserted.
+    const isColourPage = document.body.classList.contains('motomotus-colour-context') ||
+                         document.body.classList.contains('page-id-3632') ||
+                         Boolean(document.querySelector('.motomotus-container--artist'));
+    const arketypeLogoUrl = window.motomotusSiteConfig && window.motomotusSiteConfig.arketypeLogoUrl;
+
+    if (isColourPage && arketypeLogoUrl) {
+        document.querySelectorAll('a[href*="/home/"]').forEach(link => {
+            if (!link.querySelector('img')) {
+                return;
+            }
+
+            if (link.querySelector('.motomotus-arketype-logo')) {
+                return;
+            }
+
+            link.classList.add('motomotus-colour-logo-link');
+            link.setAttribute('aria-label', 'MOTOMOTUS × ARKETYPE home');
+            const mark = document.createElement('span');
+            mark.className = 'motomotus-lockup-x';
+            mark.textContent = '×';
+            mark.setAttribute('aria-hidden', 'true');
+
+            const logo = document.createElement('img');
+            logo.className = 'motomotus-arketype-logo';
+            logo.src = arketypeLogoUrl;
+            logo.alt = '';
+            logo.width = 800;
+            logo.height = 123;
+            logo.decoding = 'sync';
+            logo.fetchPriority = 'high';
+            link.appendChild(mark);
+            link.appendChild(logo);
+        });
+    }
+
     // 1. Google Maps popup for the address on the Info page
     const headings = document.querySelectorAll('.elementor-heading-title');
     headings.forEach(h => {
@@ -6,7 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
             h.style.cursor = 'pointer';
             h.title = 'Open in Google Maps';
             h.addEventListener('click', () => {
-                window.open('https://goo.gl/maps/Q3D1x9u5jD3g9P7n6', '_blank');
+                window.open('https://maps.app.goo.gl/u7fZfQeebo26GX416', '_blank');
             });
         }
     });

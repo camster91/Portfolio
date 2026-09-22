@@ -1,22 +1,283 @@
 /* motomotus-global-fixes.css */
-/* Fix blue outline on mobile videos */
-video, iframe, .elementor-video, .elementor-background-video-hosted {
+
+/* =========================================================
+   0. FONT FACE — Zilando 2 variable font (home page nav)
+   ========================================================= */
+@font-face {
+    font-family: 'Zilando 2';
+    font-display: swap;
+    src: url('https://motomotus.com/wp-content/uploads/2026/01/ZalandoSansExpanded-VariableFont_wght.ttf') format('truetype');
+    font-weight: 100 900;
+}
+
+/* =========================================================
+   1. HOME PAGE — Nav + Video
+   ========================================================= */
+.home #wpadminbar {
+    display: none !important;
+}
+
+.home html,
+.home body {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+.mm-simple-intro {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: -99 !important;
+    overflow: hidden !important;
+    background-color: #e2e2e2 !important;
+    pointer-events: none !important;
+}
+
+.mm-simple-video {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+}
+
+.mm-simple-video--mobile {
+    display: none !important;
+}
+
+@media (max-width: 768px) {
+    .mm-simple-video--desktop { display: none !important; }
+    .mm-simple-video--mobile { display: block !important; }
+}
+
+.mm-custom-nav {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    align-items: center !important;
+    padding: 18px 50px !important;
+    z-index: 9999 !important;
+    box-sizing: border-box !important;
+    pointer-events: auto !important;
+    animation: mmFadeInDown 1.2s ease-out 4.5s both !important;
+}
+
+.mm-nav-link {
+    display: inline-flex !important;
+    align-items: center !important;
+    padding: 8px 16px !important;
+    color: #272f38 !important;
+    font-family: 'Zilando 2', sans-serif !important;
+    font-size: 15px !important;
+    font-weight: 343 !important;
+    line-height: 22.5px !important;
+    text-decoration: none !important;
+    transition: transform 0.3s ease, color 0.3s ease !important;
+}
+
+.mm-nav-link + .mm-nav-link {
+    margin-left: 8px;
+}
+
+.mm-nav-link:hover {
+    color: #a8c3d3 !important;
+    transform: scale(1.05) !important;
+}
+
+@media (max-width: 768px) {
+    .mm-custom-nav {
+        justify-content: center !important;
+        padding: 18px 20px !important;
+    }
+
+    .mm-nav-link + .mm-nav-link {
+        margin-left: 0;
+    }
+}
+
+@keyframes mmFadeInDown {
+    0% { opacity: 0; transform: translateY(-20px); }
+    100% { opacity: 1; transform: translateY(0); }
+}
+
+/* Keep the live menu available immediately. A delayed opacity animation made
+   the navigation appear to be missing while the homepage was loading. */
+.elementor-element-18f3a3b .e-n-menu-item {
+    opacity: 1 !important;
+    animation: none !important;
+}
+
+/* =========================================================
+   2. GLOBAL FIXES
+   ========================================================= */
+video,
+iframe,
+.elementor-video,
+.elementor-background-video-hosted {
     outline: none !important;
     -webkit-tap-highlight-color: transparent !important;
 }
 
-/* Ensure Google Maps pointer style overrides */
 .elementor-heading-title[title="Open in Google Maps"]:hover {
     opacity: 0.8;
 }
 
-/* Site-wide background consistency */
 body {
     background-color: #e2e2e2 !important;
 }
 
-/* Mobile nav dropdown panel background */
+/* Full-bleed portfolio sections use viewport units to escape constrained
+   theme containers. Clip the scrollbar-width sliver they can otherwise add. */
+body:has(.motomotus-container) {
+    overflow-x: clip;
+}
+
+/* Keep the shared Colour frame stable on pages with different content heights. */
+html:has(body.motomotus-colour-context) {
+    scrollbar-gutter: stable;
+}
+
+body.motomotus-colour-context {
+    overflow-x: clip;
+}
+
+body.motomotus-colour-context .elementor-location-header {
+    min-height: 105px;
+}
+
+/* Approved MOTOMOTUS × ARKETYPE lockup for every Colour landing/artist page. */
+.motomotus-colour-logo-link {
+    --motomotus-colour-lockup-width: 112px;
+    align-items: center;
+    display: inline-flex !important;
+    flex-direction: column;
+    min-height: 85px;
+    width: max-content !important;
+}
+
+.motomotus-colour-logo-link > img:not(.motomotus-arketype-logo) {
+    display: block !important;
+    height: auto !important;
+    max-width: var(--motomotus-colour-lockup-width) !important;
+    width: var(--motomotus-colour-lockup-width) !important;
+}
+
+.motomotus-lockup-x {
+    align-items: center;
+    display: flex;
+    font-family: 'Zilando 2', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    height: 11px;
+    justify-content: center;
+    line-height: 1;
+    margin: 1px 0;
+    width: var(--motomotus-colour-lockup-width);
+}
+
+.motomotus-arketype-logo {
+    display: block !important;
+    height: auto !important;
+    margin: 0 !important;
+    max-width: var(--motomotus-colour-lockup-width) !important;
+    width: var(--motomotus-colour-lockup-width) !important;
+}
+
+/* Reusable Colour landing layout. Page content owns the labels and links. */
+.motomotus-colour-landing {
+    align-items: center;
+    background: #e2e2e2;
+    box-sizing: border-box;
+    color: #272f38;
+    display: flex;
+    font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    justify-content: center;
+    margin-left: calc(50% - 50vw);
+    min-height: calc(100vh - 105px);
+    padding: clamp(90px, 15vh, 180px) 40px 80px;
+    width: 100vw;
+}
+
+.motomotus-colour-landing__inner {
+    max-width: 1100px;
+    text-align: center;
+    width: 100%;
+}
+
+.motomotus-colour-landing__heading {
+    color: inherit;
+    font: 500 clamp(22px, 3.1vw, 48px) / 1.1 'Zilando 2', sans-serif;
+    letter-spacing: 0.02em;
+    margin: 0 0 clamp(70px, 10vh, 150px);
+    text-transform: uppercase;
+}
+
+.motomotus-colour-artists {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(18px, 3vh, 36px);
+}
+
+.motomotus-colour-artists a {
+    color: inherit;
+    font-size: clamp(28px, 4.2vw, 68px);
+    letter-spacing: 0.02em;
+    line-height: 1;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.motomotus-colour-artists a:hover {
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+}
+
+.motomotus-colour-artists a:focus-visible {
+    outline: 3px solid #272f38;
+    outline-offset: 6px;
+}
+
+@media (max-width: 768px) {
+    body.motomotus-colour-context .elementor-location-header {
+        min-height: 91px;
+    }
+
+    .motomotus-colour-logo-link {
+        --motomotus-colour-lockup-width: 90px;
+        min-height: 72px;
+    }
+
+    .motomotus-lockup-x {
+        font-size: 8px;
+        height: 9px;
+    }
+
+    .motomotus-colour-landing {
+        min-height: calc(100vh - 91px);
+        padding: 80px 20px 60px;
+    }
+
+    .motomotus-colour-landing__heading {
+        font-size: clamp(18px, 5vw, 30px);
+        margin-bottom: 80px;
+    }
+}
+
 .e-n-menu-wrapper,
 .e-n-menu-dropdown {
     background-color: #e2e2e2 !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .mm-custom-nav,
+    .elementor-element-18f3a3b .e-n-menu-item {
+        animation: none !important;
+        opacity: 1 !important;
+    }
 }
