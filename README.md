@@ -39,3 +39,40 @@ Place the following shortcode on any page or post:
 - CSS is located in `assets/css/style.css`.
 - JS logic is located in `assets/js/main.js`.
 - Meta fields are prefixed with `_motomotus_` in the database.
+
+
+## Colour Pages — September 2026 implementation contract
+
+The Colour work is a three-page experience that must remain unpublished until the client announcement/release is approved:
+
+1. **Colour landing page** — MOTOMOTUS × ARKETYPE lockup, VFX / COLOUR navigation, and two artist links: **CHUCK** and **BEATRICE TREMBLAY**.
+2. **Chuck artist page** — Chuck's dedicated portfolio/video grid.
+3. **Beatrice Tremblay artist page** — Beatrice's dedicated portfolio/video grid using the same underlying grid system as Chuck.
+
+### Shared visual frame
+
+The Colour landing page and both artist pages must feel like one fixed visual system. When navigating Colour → Chuck → Colour → Beatrice, the following elements must not visibly jump, resize, reflow, or change their X/Y position at the same viewport size:
+
+- MOTOMOTUS × ARKETYPE lockup
+- VFX / COLOUR navigation
+- shared page margins and container width
+- artist portfolio grid origin, columns, gutters, and top offset
+
+The lockup is **two supplied logo assets**, with MOTOMOTUS above ARKETYPE and a small centred **×** between them. Do not approximate or recreate either logo with text. Preserve the supplied artwork's proportions and spacing.
+
+Media must use reserved aspect-ratio containers so image/video loading does not move the grid. Header/logo/nav dimensions must be consistent across templates. Browser scrollbar appearance/disappearance must not create horizontal page-to-page movement.
+
+### Browser/Codex-local finishing pass
+
+Do the final alignment against the actual WordPress/Elementor pages in-browser. Before changing shared CSS, inspect computed dimensions and identify the real source of any movement (theme/Elementor container differences, page-specific margins/padding, header height, scrollbar width, font loading, image/video intrinsic sizing, or page-specific overrides).
+
+Acceptance test at representative desktop, tablet, and mobile widths:
+
+- Rapidly navigate between all three Colour pages.
+- The logo lockup and navigation appear stationary.
+- Artist grids share the same visual origin and geometry.
+- Only the artist/project content changes.
+- No layout shift occurs as fonts, images, or videos load.
+- Existing VFX and Info pages are regression-tested after shared CSS changes.
+
+Do not publish Colour pages or expose confidential Colour work as part of plugin development.
