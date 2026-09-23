@@ -360,6 +360,14 @@
     }
 }
 
+@media (max-width: 480px) {
+    .motomotus-container--artist .motomotus-page-title {
+        /* Beatrice wraps at phone widths; reserve the same two-line title slot
+           for every artist so the portfolio grid keeps a fixed origin. */
+        min-height: 2em;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .motomotus-modal-close {
         transition: none !important;
