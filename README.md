@@ -71,7 +71,7 @@ published records.
 
 ## Release identity
 
-**Motomotus Portfolio 1.4.8** is the product identity for the current release candidate. It adds the reusable VFX/Colour collection and artist content model required by the supplied page designs, the approved Colour artist captions, and the fixed MOTOMOTUS × ARKETYPE frame shared by the landing and artist pages. This package is for controlled Motomotus WordPress installations; it is not presented as a WordPress.org listing. The package contains code plus the supplied ARKETYPE brand asset and no client portfolio media. Removing or replacing the plugin preserves portfolio posts, terms, and metadata by design.
+**Motomotus Portfolio 1.4.9** is the product identity for the current release candidate. It adds the reusable VFX/Colour collection and artist content model required by the supplied page designs, the approved Colour artist captions, and the fixed MOTOMOTUS × ARKETYPE frame shared by the landing and artist pages. This package is for controlled Motomotus WordPress installations; it is not presented as a WordPress.org listing. The package contains code plus the supplied ARKETYPE brand asset and no client portfolio media. Removing or replacing the plugin preserves portfolio posts, terms, and metadata by design.
 
 ## Colour pages — September 2026 implementation contract
 
