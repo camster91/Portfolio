@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Motomotus Portfolio
  * Description: A robust, accessible portfolio system for managing and presenting Motomotus work.
- * Version: 1.4.7
+ * Version: 1.4.8
  * Author: Motomotus
  * Text Domain: motomotus
  * License: MIT
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define constants
 if ( ! defined( 'MOTOMOTUS_VERSION' ) ) {
-    define( 'MOTOMOTUS_VERSION', '1.4.7' );
+    define( 'MOTOMOTUS_VERSION', '1.4.8' );
 }
 if ( ! defined( 'MOTOMOTUS_PATH' ) ) {
     define( 'MOTOMOTUS_PATH', plugin_dir_path( __FILE__ ) );
@@ -100,10 +100,26 @@ function motomotus_is_colour_context() {
     return (bool) preg_match( '/\[motomotus_work\b[^\]]*(?:\bvariant\s*=\s*["\']?artist\b|\bartist\s*=)/i', $source );
 }
 
+/**
+ * Identify Colour artist pages so theme chrome can use the same fixed origin
+ * as the existing Elementor-built Chuck page.
+ */
+function motomotus_is_colour_artist_context() {
+    if ( ! is_singular( 'page' ) ) {
+        return false;
+    }
+
+    return (bool) preg_match( '/\[motomotus_work\b[^\]]*(?:\bvariant\s*=\s*["\']?artist\b|\bartist\s*=)/i', motomotus_get_current_page_source() );
+}
+
 add_filter( 'body_class', 'motomotus_colour_body_class' );
 function motomotus_colour_body_class( $classes ) {
     if ( motomotus_is_colour_context() ) {
         $classes[] = 'motomotus-colour-context';
+    }
+
+    if ( motomotus_is_colour_artist_context() ) {
+        $classes[] = 'motomotus-colour-artist-context';
     }
 
     return $classes;

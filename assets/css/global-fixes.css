@@ -151,6 +151,22 @@ body.motomotus-colour-context .elementor-location-header {
     min-height: 105px;
 }
 
+/* Astra's default page title and content margins otherwise push non-Elementor
+   artist pages below the shared Chuck grid origin. Reserve the same 10px
+   content offset used by the existing artist frame. */
+body.motomotus-colour-artist-context #primary {
+    margin-bottom: 0;
+    margin-top: 0;
+}
+
+body.motomotus-colour-artist-context .entry-header {
+    display: none;
+}
+
+body.motomotus-colour-artist-context .entry-content {
+    padding-top: 10px;
+}
+
 /* Approved MOTOMOTUS × ARKETYPE lockup for every Colour landing/artist page. */
 .motomotus-colour-logo-link {
     --motomotus-colour-lockup-width: 112px;

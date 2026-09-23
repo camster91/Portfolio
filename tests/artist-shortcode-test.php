@@ -177,9 +177,15 @@ if ( false !== strpos( $style_source, '.motomotus-container--artist .motomotus-i
 
 $plugin_source = file_get_contents( dirname( __DIR__ ) . '/motomotus-portfolio.php' );
 $global_script = file_get_contents( dirname( __DIR__ ) . '/assets/js/global-fixes.js' );
+$global_style  = file_get_contents( dirname( __DIR__ ) . '/assets/css/global-fixes.css' );
 $logo_asset    = dirname( __DIR__ ) . '/assets/images/arketype-logo.png';
 if ( false === strpos( $plugin_source, "'arketypeLogoUrl'" ) || false === strpos( $global_script, 'a[href*="/home/"]' ) || false === strpos( $global_script, 'MOTOMOTUS × ARKETYPE home' ) || false === strpos( $global_script, 'motomotus-lockup-x' ) || false === strpos( $global_script, 'motomotus-arketype-logo' ) || ! is_file( $logo_asset ) || filesize( $logo_asset ) < 100 ) {
     fwrite( STDERR, "The shared Colour-page ARKETYPE logo treatment is incomplete.\n" );
+    exit( 1 );
+}
+
+if ( false === strpos( $plugin_source, 'motomotus-colour-artist-context' ) || false === strpos( $global_style, 'body.motomotus-colour-artist-context .entry-header' ) || false === strpos( $global_style, 'body.motomotus-colour-artist-context #primary' ) ) {
+    fwrite( STDERR, "Colour artist pages must neutralize theme title spacing before the shared grid renders.\n" );
     exit( 1 );
 }
 
