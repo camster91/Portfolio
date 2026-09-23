@@ -141,6 +141,9 @@ body:has(.motomotus-container) {
 /* Keep the shared Colour frame stable on pages with different content heights. */
 html:has(body.motomotus-colour-context) {
     scrollbar-gutter: stable;
+    /* Elementor sizes its stretched mobile menu from clientWidth. Reserve the
+       vertical scrollbar on short drafts so its links do not jump. */
+    overflow-y: scroll;
 }
 
 body.motomotus-colour-context {
