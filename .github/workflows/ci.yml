@@ -9,4 +9,25 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
-      - run: find . -name '*.php' -not -path './vendor/*' -exec php -l {} +
+      - name: PHP syntax
+        run: find . -name '*.php' -not -path './vendor/*' -exec php -l {} +
+      - name: JavaScript syntax
+        run: find assets/js -name '*.js' -exec node --check {} +
+      - name: Portfolio content model contract
+        run: php tests/post-type-test.php
+      - name: Portfolio ordering contract
+        run: php tests/sort-test.php
+      - name: Colour artist and landing contracts
+        run: php tests/artist-shortcode-test.php
+      - name: Build release archive
+        run: bash scripts/build-plugin.sh
+      - name: Verify release boundary
+        run: |
+          archive="$(find dist -maxdepth 1 -name 'motomotus-portfolio-*.zip' -print -quit)"
+          test -n "$archive"
+          unzip -l "$archive" | grep 'motomotus-portfolio/includes/admin.php'
+          unzip -l "$archive" | grep 'motomotus-portfolio/includes/post-type.php'
+          if unzip -l "$archive" | grep -E 'proof/|\.(mp4|mov)$'; then
+            echo 'Release archive contains proof or raw video media.' >&2
+            exit 1
+          fi
