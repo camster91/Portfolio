@@ -48,7 +48,7 @@ Optional attributes:
 - `[motomotus_work posts_per_page="6"]` limits the number of published items.
 
 Colour page configuration:
-- `[motomotus_colour_landing chuck_url="/chuck/" beatrice_url="/beatrice-tremblay/"]` renders the two approved artist links inside the shared Colour frame.
+- `[motomotus_colour_landing chuck_url="/chuck/" beatrice_url="/beatrice-tremblay/" beatrice_page_id="3760"]` renders the two approved artist links inside the shared Colour frame. The page ID lets authorized reviewers open an unpublished Beatrice draft from the Colour draft; the public URL is used after publication.
 - `[motomotus_work collection="colour" artist="beatrice-tremblay" heading="BEATRICE TREMBLAY" variant="artist"]` creates the matching Beatrice grid when her portfolio records are available.
 
 On an authenticated WordPress preview, the grid may include draft portfolio
@@ -71,7 +71,7 @@ published records.
 
 ## Release identity
 
-**Motomotus Portfolio 1.4.9** is the product identity for the current release candidate. It adds the reusable VFX/Colour collection and artist content model required by the supplied page designs, the approved Colour artist captions, and the fixed MOTOMOTUS × ARKETYPE frame shared by the landing and artist pages. This package is for controlled Motomotus WordPress installations; it is not presented as a WordPress.org listing. The package contains code plus the supplied ARKETYPE brand asset and no client portfolio media. Removing or replacing the plugin preserves portfolio posts, terms, and metadata by design.
+**Motomotus Portfolio 1.4.10** is the product identity for the current release candidate. It adds the reusable VFX/Colour collection and artist content model required by the supplied page designs, the approved Colour artist captions, and the fixed MOTOMOTUS × ARKETYPE frame shared by the landing and artist pages. This package is for controlled Motomotus WordPress installations; it is not presented as a WordPress.org listing. The package contains code plus the supplied ARKETYPE brand asset and no client portfolio media. Removing or replacing the plugin preserves portfolio posts, terms, and metadata by design.
 
 ## Colour pages — September 2026 implementation contract
 

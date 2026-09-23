@@ -9,6 +9,8 @@ $motomotus_test_shortcodes = array();
 $motomotus_test_query_args = array();
 $motomotus_test_preview    = false;
 $motomotus_test_meta       = array();
+$motomotus_test_page_status = 'draft';
+$motomotus_test_can_edit_page = true;
 
 function add_shortcode( $tag, $callback ) {
     global $motomotus_test_shortcodes;
@@ -28,13 +30,31 @@ function sanitize_text_field( $value ) {
     return trim( strip_tags( (string) $value ) );
 }
 
+function absint( $value ) {
+    return abs( (int) $value );
+}
+
 function is_preview() {
     global $motomotus_test_preview;
     return $motomotus_test_preview;
 }
 
 function current_user_can() {
-    return true;
+    global $motomotus_test_can_edit_page;
+    return $motomotus_test_can_edit_page;
+}
+
+function get_post_type( $post_id ) {
+    return 3760 === (int) $post_id ? 'page' : false;
+}
+
+function get_post_status( $post_id ) {
+    global $motomotus_test_page_status;
+    return 3760 === (int) $post_id ? $motomotus_test_page_status : false;
+}
+
+function get_preview_post_link( $post_id ) {
+    return '/?page_id=' . (int) $post_id . '&preview=true';
 }
 
 function __( $text ) {
@@ -109,6 +129,29 @@ if ( false === strpos( $landing_markup, 'motomotus-colour-landing' ) || false ==
     fwrite( STDERR, "Colour landing markup did not preserve safe, accessible artist links.\n" );
     exit( 1 );
 }
+
+$motomotus_test_preview = true;
+$review_markup = motomotus_colour_landing_shortcode( array( 'beatrice_page_id' => 3760 ) );
+if ( false === strpos( $review_markup, 'page_id=3760' ) || false === strpos( $review_markup, 'preview=true' ) ) {
+    fwrite( STDERR, "Authenticated Colour review must link to the Beatrice draft preview.\n" );
+    exit( 1 );
+}
+
+$motomotus_test_page_status = 'publish';
+$published_markup = motomotus_colour_landing_shortcode( array( 'beatrice_page_id' => 3760 ) );
+if ( false === strpos( $published_markup, 'href="/beatrice-tremblay/"' ) ) {
+    fwrite( STDERR, "The Beatrice link must use its public URL after publication.\n" );
+    exit( 1 );
+}
+
+$motomotus_test_page_status = 'draft';
+$motomotus_test_can_edit_page = false;
+$restricted_markup = motomotus_colour_landing_shortcode( array( 'beatrice_page_id' => 3760 ) );
+if ( false === strpos( $restricted_markup, 'href="/beatrice-tremblay/"' ) ) {
+    fwrite( STDERR, "The Beatrice preview URL must not be exposed to unauthorized visitors.\n" );
+    exit( 1 );
+}
+$motomotus_test_can_edit_page = true;
 
 $motomotus_test_preview = true;
 $markup = motomotus_work_shortcode(

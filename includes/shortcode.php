@@ -29,6 +29,7 @@ function motomotus_colour_landing_shortcode( $atts ) {
             'chuck_url'    => '/chuck/',
             'beatrice_label' => 'Beatrice Tremblay',
             'beatrice_url' => '/beatrice-tremblay/',
+            'beatrice_page_id' => 0,
         ),
         $atts,
         'motomotus_colour_landing'
@@ -39,6 +40,16 @@ function motomotus_colour_landing_shortcode( $atts ) {
     $chuck_url      = esc_url( $atts['chuck_url'] );
     $beatrice_label = sanitize_text_field( $atts['beatrice_label'] );
     $beatrice_url   = esc_url( $atts['beatrice_url'] );
+
+    // Draft artist pages need their authenticated preview URL during review.
+    // The configured public URL remains the destination after publication.
+    $beatrice_page_id = absint( $atts['beatrice_page_id'] );
+    if ( is_preview() && $beatrice_page_id && current_user_can( 'edit_post', $beatrice_page_id ) && 'page' === get_post_type( $beatrice_page_id ) && 'publish' !== get_post_status( $beatrice_page_id ) ) {
+        $preview_url = get_preview_post_link( $beatrice_page_id );
+        if ( $preview_url ) {
+            $beatrice_url = esc_url( $preview_url );
+        }
+    }
 
     ob_start();
     ?>
