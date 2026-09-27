@@ -1,11 +1,11 @@
 @font-face {
     font-family: 'Zilando 2';
-    font-display: auto;
+    font-display: swap;
     src: url('https://motomotus.com/wp-content/uploads/2026/01/ZalandoSansExpanded-VariableFont_wght.ttf') format('truetype');
     font-weight: 100 900;
 }
 
-/* Full-width breakout inside any theme / Elementor container */
+/* Full-width breakout inside any theme / Elementor container. */
 .motomotus-container {
     position: relative;
     left: 50%;
@@ -19,12 +19,68 @@
     font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
 }
 
-.motomotus-filters { display: none !important; }
+.motomotus-container--filters-hidden .motomotus-filters {
+    display: none;
+}
+
+.motomotus-page-title {
+    margin: 0;
+    padding: 0;
+    color: #272f38;
+    font: 700 clamp(1.75rem, 3vw, 2.5rem) / 1 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.motomotus-container--artist .motomotus-grid {
+    /* Use the same reserved top rhythm as the Work grid. The previous 140px
+       artist-only value pushed thumbnails roughly 60px below the VFX frame. */
+    padding-top: 80px;
+}
+
+.motomotus-container--artist .motomotus-info {
+    min-height: 58px;
+}
+
+.motomotus-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 28px 0 0;
+}
+
+.motomotus-filter-btn {
+    appearance: none;
+    border: 1px solid rgba(39, 47, 56, 0.35);
+    border-radius: 999px;
+    background: transparent;
+    color: #272f38;
+    cursor: pointer;
+    font: inherit;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 7px 12px;
+    text-transform: uppercase;
+}
+
+.motomotus-filter-btn.active,
+.motomotus-filter-btn:hover {
+    background: #272f38;
+    color: #fff;
+}
+
+.motomotus-filter-btn:focus-visible,
+.motomotus-item:focus-visible,
+.motomotus-modal-close:focus-visible {
+    outline: 3px solid #0b5fff;
+    outline-offset: 4px;
+}
 
 /* Grid */
 .motomotus-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 55px;
     width: 100%;
     margin: 0;
@@ -33,35 +89,36 @@
 }
 
 .motomotus-item {
+    appearance: none;
+    border: 0;
+    border-radius: 0;
     cursor: pointer;
     background: transparent;
+    color: inherit;
+    display: block;
+    font: inherit;
     padding: 0;
+    text-align: left;
+    width: 100%;
     box-sizing: border-box;
-    outline: none;
-    transition: outline 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Fix #5: Focus styles for keyboard accessibility */
+.motomotus-item:hover,
+.motomotus-item:focus,
+.motomotus-item:active {
+    background: transparent;
+    border-color: transparent;
+    box-shadow: none;
+    color: inherit;
+}
+
 .motomotus-item:focus-visible {
-    outline: 2px solid #272f38;
-    outline-offset: 4px;
-    border-radius: 2px;
+    outline-color: #272f38;
 }
 
-.motomotus-filter-btn:focus-visible {
-    outline: 2px solid #272f38;
-    outline-offset: 2px;
-}
-
-.motomotus-modal-close:focus-visible {
-    outline: 2px solid #fff;
-    outline-offset: 2px;
-    background: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.9);
-}
-
-.motomotus-item-inner:focus {
-    outline: none;
+.motomotus-item:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 .motomotus-item-inner {
@@ -94,146 +151,183 @@
     padding: 0;
 }
 
-/* Title - Bold */
 .motomotus-title {
     margin: 0;
+    color: #272f38;
+    font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 16px;
     font-weight: 700;
-    font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    text-transform: uppercase;
     line-height: 1.2;
-    color: #272f38;
+    text-transform: uppercase;
 }
 
-/* Subtitle - Medium Italic */
 .motomotus-agency {
     margin: 2px 0 0;
-    font-size: 13px;
-    font-weight: 500;
-    font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    text-transform: uppercase;
     color: #555;
+    font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: 13px;
     font-style: italic;
+    font-weight: 500;
+    text-transform: uppercase;
 }
 
-/* Modal styles */
+.motomotus-empty {
+    color: #555;
+    grid-column: 1 / -1;
+}
+
+/* Native dialog with a viewport-sized backdrop and a safe fallback class. */
 .motomotus-modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 10000;
-    display: none;
     align-items: center;
-    justify-content: center;
-    padding: 20px;
+    background: transparent;
+    border: 0;
     box-sizing: border-box;
+    color: #fff;
+    height: 100%;
+    justify-content: center;
+    margin: 0;
+    max-height: none;
+    max-width: none;
+    padding: 20px;
+    width: 100%;
+}
+
+.motomotus-modal:not([open]):not(.is-open) {
+    display: none;
+}
+
+.motomotus-modal[open],
+.motomotus-modal.is-open {
+    display: flex;
+}
+
+.motomotus-modal::backdrop {
+    background: transparent;
 }
 
 .motomotus-modal-overlay {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.95);
+    inset: 0;
+    background: rgba(0, 0, 0, 0.95);
+    cursor: pointer;
 }
 
 .motomotus-modal-content {
     position: relative;
+    z-index: 1;
     width: 100%;
     max-width: 1100px;
     max-height: 95vh;
-    z-index: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
-    padding-top: 50px;
+    overflow: auto;
+    padding: 54px 0 20px;
     box-sizing: border-box;
 }
 
-/* Close button */
+.motomotus-modal-title {
+    margin: 0 0 18px;
+    color: #f2f2f2;
+    font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-size: clamp(1.5rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    line-height: 1;
+    text-transform: uppercase;
+}
+
 .motomotus-modal-close {
     position: absolute;
     top: 10px;
-    right: 10px;
-    background: none;
-    border: 1px solid rgba(255,255,255,0.5);
-    color: #fff;
-    width: 40px;
-    height: 40px;
-    font-size: 0;
-    cursor: pointer;
-    z-index: 10;
-    border-radius: 50%;
-    transition: all 0.2s ease;
+    right: 0;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 40px;
+    height: 40px;
     padding: 0;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    background: transparent;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
 }
+
 .motomotus-modal-close:hover {
-    background: rgba(255,255,255,0.15);
-    border-color: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.9);
 }
+
 .motomotus-modal-close svg {
     width: 14px;
     height: 14px;
+    fill: none;
     stroke: currentColor;
     stroke-width: 2;
-    fill: none;
 }
 
 .motomotus-video-container {
     position: relative;
     width: 100%;
-    padding-bottom: 56.25%;
     height: 0;
-    background: #000;
+    padding-bottom: 56.25%;
     flex-shrink: 0;
+    background: #000;
 }
 
-.motomotus-video-container iframe, .motomotus-video-container video {
+.motomotus-video-container iframe,
+.motomotus-video-container video {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
+    border: 0;
     outline: none !important;
 }
 
-/* Caption styles */
 .motomotus-modal-caption {
     margin-top: 20px;
+    padding: 0;
     color: #fff;
     font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     font-size: 11px;
     line-height: 1.6;
-    text-align: left;
-    flex: 1;
     overflow-y: auto;
-    padding: 0;
+    text-align: left;
 }
-.motomotus-caption-inner {
-    max-width: none;
-    margin: 0;
-    background: none;
-    padding: 0;
-    border-radius: 0;
-    border: none;
-    backdrop-filter: none;
-    -webkit-backdrop-filter: none;
+
+.caption-block {
+    margin-bottom: 6px;
 }
-.caption-block { margin-bottom: 6px; }
-.caption-label { font-weight: 550; font-variation-settings: 'wght' 550; display: inline; font-family: 'Zilando 2', sans-serif; letter-spacing: 0.02em; }
-.caption-value { font-weight: 400; font-variation-settings: 'wght' 400; display: inline; font-family: 'Zilando 2', sans-serif; }
+
+.caption-label {
+    display: inline;
+    font-family: 'Zilando 2', sans-serif;
+    font-variation-settings: 'wght' 550;
+    font-weight: 550;
+    letter-spacing: 0.02em;
+}
+
+.caption-value {
+    display: inline;
+    font-family: 'Zilando 2', sans-serif;
+    font-variation-settings: 'wght' 400;
+    font-weight: 400;
+}
 
 /* Responsive */
 @media (max-width: 1024px) {
     .motomotus-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         padding-top: 60px;
+    }
+
+    .motomotus-container--artist .motomotus-grid {
+        padding-top: 24px;
     }
 }
 
@@ -242,21 +336,40 @@
         padding-left: 20px;
         padding-right: 20px;
     }
+
     .motomotus-grid {
         grid-template-columns: 1fr;
         gap: 30px;
         padding-top: 40px;
     }
-    .motomotus-media {
-        max-height: none;
-    }
+
     .motomotus-title {
         font-size: 14px;
     }
+
     .motomotus-agency {
         font-size: 11px;
     }
+
+    .motomotus-modal-content {
+        padding-top: 54px;
+    }
+
     .motomotus-modal-caption {
         font-size: 11px;
+    }
+}
+
+@media (max-width: 480px) {
+    .motomotus-container--artist .motomotus-page-title {
+        /* Beatrice wraps at phone widths; reserve the same two-line title slot
+           for every artist so the portfolio grid keeps a fixed origin. */
+        min-height: 2em;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .motomotus-modal-close {
+        transition: none !important;
     }
 }

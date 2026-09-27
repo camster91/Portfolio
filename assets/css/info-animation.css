@@ -1,0 +1,78 @@
+/* =========================================================
+   Info Page Animation — "VFX Timeline"
+   Staggered fade-up sequence with line-draw on dividers.
+   Triggered by Intersection Observer adding .info-animate-in to body.
+   ========================================================= */
+
+/* ---- Initial State: Hidden ---- */
+body:not(.info-animate-in) [data-id="333009b"],
+body:not(.info-animate-in) [data-id="782c93d"],
+body:not(.info-animate-in) [data-id="8226a6d"],
+body:not(.info-animate-in) [data-id="4d7d9b0"],
+body:not(.info-animate-in) [data-id="077e7d7"],
+body:not(.info-animate-in) [data-id="b3179a6"],
+body:not(.info-animate-in) [data-id="6834d63"],
+body:not(.info-animate-in) [data-id="36a17d7"],
+body:not(.info-animate-in) [data-id="3e2ea99"],
+body:not(.info-animate-in) [data-id="45c5eb1"],
+body:not(.info-animate-in) [data-id="5e5391c"] {
+    opacity: 0;
+    transform: translateY(12px);
+}
+
+body:not(.info-animate-in) [data-id="d9e8569"] .elementor-divider-separator,
+body:not(.info-animate-in) [data-id="99623a6"] .elementor-divider-separator {
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+/* ---- Animated State ---- */
+body.info-animate-in [data-id="333009b"] { animation: infoFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0ms forwards; }
+body.info-animate-in [data-id="782c93d"] { animation: infoFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 50ms forwards; }
+body.info-animate-in [data-id="d9e8569"] .elementor-divider-separator { animation: infoLineDraw 0.4s cubic-bezier(0.4, 0, 0.2, 1) 250ms forwards; }
+body.info-animate-in [data-id="8226a6d"] { animation: infoFadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 350ms forwards; }
+body.info-animate-in [data-id="4d7d9b0"] { animation: infoFadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 400ms forwards; }
+body.info-animate-in [data-id="077e7d7"] { animation: infoFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 650ms forwards; }
+body.info-animate-in [data-id="b3179a6"] { animation: infoFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 700ms forwards; }
+body.info-animate-in [data-id="99623a6"] .elementor-divider-separator { animation: infoLineDraw 0.4s cubic-bezier(0.4, 0, 0.2, 1) 900ms forwards; }
+body.info-animate-in [data-id="6834d63"] { animation: infoFadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 1000ms forwards; }
+body.info-animate-in [data-id="36a17d7"] { animation: infoFadeUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) 1050ms forwards; }
+body.info-animate-in [data-id="3e2ea99"] { animation: infoFadeUp 0.6s cubic-bezier(0.4, 0, 0.2, 1) 1400ms forwards; }
+body.info-animate-in [data-id="45c5eb1"],
+body.info-animate-in [data-id="5e5391c"] { animation: infoFadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1) 1800ms forwards; }
+
+@keyframes infoFadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes infoLineDraw {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    body:not(.info-animate-in) [data-id="333009b"],
+    body:not(.info-animate-in) [data-id="782c93d"],
+    body:not(.info-animate-in) [data-id="8226a6d"],
+    body:not(.info-animate-in) [data-id="4d7d9b0"],
+    body:not(.info-animate-in) [data-id="077e7d7"],
+    body:not(.info-animate-in) [data-id="b3179a6"],
+    body:not(.info-animate-in) [data-id="6834d63"],
+    body:not(.info-animate-in) [data-id="36a17d7"],
+    body:not(.info-animate-in) [data-id="3e2ea99"],
+    body:not(.info-animate-in) [data-id="45c5eb1"],
+    body:not(.info-animate-in) [data-id="5e5391c"] {
+        opacity: 1;
+        transform: none;
+    }
+
+    body:not(.info-animate-in) [data-id="d9e8569"] .elementor-divider-separator,
+    body:not(.info-animate-in) [data-id="99623a6"] .elementor-divider-separator {
+        transform: none;
+    }
+
+    body.info-animate-in [data-id] {
+        animation: none;
+    }
+}
