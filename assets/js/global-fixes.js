@@ -56,6 +56,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Center the Colour names in the viewport, accounting for the theme's
+    // header, admin toolbar and content margins without fixed offsets.
+    const colourLanding = document.querySelector('.motomotus-colour-landing');
+    if (colourLanding) {
+        const alignColourLanding = () => {
+            const top = Math.max(0, colourLanding.getBoundingClientRect().top + window.scrollY);
+            colourLanding.style.setProperty('--motomotus-colour-top', `${top}px`);
+        };
+        alignColourLanding();
+        window.addEventListener('load', alignColourLanding, { once: true });
+        window.addEventListener('resize', alignColourLanding);
+        if (document.fonts) document.fonts.ready.then(alignColourLanding);
+    }
+
     // 1. Google Maps popup for the address on the Info page
     const headings = document.querySelectorAll('.elementor-heading-title');
     headings.forEach(h => {

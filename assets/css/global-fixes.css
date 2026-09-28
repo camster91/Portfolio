@@ -213,8 +213,8 @@ img.motomotus-colour-lockup {
     font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     justify-content: center;
     margin-left: calc(50% - 50vw);
-    min-height: calc(100vh - 81px);
-    padding: 40px 24px 121px;
+    min-height: calc(100svh - var(--motomotus-colour-top, 81px));
+    padding: 40px 24px calc(var(--motomotus-colour-top, 81px) + 40px);
     width: 100vw;
 }
 
@@ -293,8 +293,8 @@ img.motomotus-colour-lockup {
     }
 
     .motomotus-colour-landing {
-        min-height: calc(100vh - 105px);
-        padding: 80px 20px 185px;
+        min-height: calc(100svh - var(--motomotus-colour-top, 105px));
+        padding: 80px 20px calc(var(--motomotus-colour-top, 105px) + 80px);
     }
 
 }
