@@ -63,6 +63,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const alignColourLanding = () => {
             const top = Math.max(0, colourLanding.getBoundingClientRect().top + window.scrollY);
             colourLanding.style.setProperty('--motomotus-colour-top', `${top}px`);
+            // clientWidth excludes a visible scrollbar, unlike 100vw.
+            colourLanding.style.setProperty('--motomotus-colour-width', `${document.documentElement.clientWidth}px`);
         };
         alignColourLanding();
         window.addEventListener('load', alignColourLanding, { once: true });
