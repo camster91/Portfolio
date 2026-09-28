@@ -4,6 +4,33 @@ document.addEventListener('DOMContentLoaded', function() {
                          Boolean(document.querySelector('.motomotus-container--artist'));
     const siteConfig = window.motomotusSiteConfig || {};
 
+    // Give the shared header's home link a name without changing its artwork.
+    document.querySelectorAll('.elementor-location-header a[href*="/home/"]').forEach(link => {
+        if (link.querySelector('img') && !link.getAttribute('aria-label')) {
+            link.setAttribute('aria-label', isColourPage ? 'Motomotus / Arketype — home' : 'Motomotus — home');
+        }
+    });
+
+    // Keep the approved VFX label consistent across desktop and mobile menus.
+    document.querySelectorAll('.e-n-menu-heading a, .mm-custom-nav a').forEach(link => {
+        if (link.textContent.trim().toUpperCase() !== 'WORK') return;
+        const label = link.querySelector('.e-n-menu-title-text') || link;
+        label.textContent = 'VFX';
+    });
+
+    // These Elementor pages omit a page heading; retain their visible layout.
+    const pageHeading = document.body.classList.contains('page-id-9') ? 'Info' :
+                        document.body.classList.contains('page-id-11') ? 'VFX work' : '';
+    if (pageHeading && !document.querySelector('h1')) {
+        const content = document.querySelector('#content');
+        if (content) {
+            const heading = document.createElement('h1');
+            heading.className = 'motomotus-accessible-heading';
+            heading.textContent = pageHeading;
+            content.prepend(heading);
+        }
+    }
+
     // Preserve the existing wordmark's layout box while the supplied lockup
     // extends below it. This keeps the menu and first grid row stationary.
     if (isColourPage && siteConfig.colourLogoUrl) {
@@ -72,15 +99,20 @@ document.addEventListener('DOMContentLoaded', function() {
         if (document.fonts) document.fonts.ready.then(alignColourLanding);
     }
 
-    // 1. Google Maps popup for the address on the Info page
+    // 1. Use a real link for the Info address so keyboard users can open Maps.
     const headings = document.querySelectorAll('.elementor-heading-title');
     headings.forEach(h => {
         if (h.innerHTML.includes('158 Sterling Road') || h.innerHTML.includes('Toronto, ON')) {
-            h.style.cursor = 'pointer';
             h.title = 'Open in Google Maps';
-            h.addEventListener('click', () => {
-                window.open('https://maps.app.goo.gl/u7fZfQeebo26GX416', '_blank');
-            });
+            // The mobile Elementor heading already contains an address link.
+            if (h.closest('a') || h.querySelector('a')) return;
+            const link = document.createElement('a');
+            link.className = 'motomotus-address-link';
+            link.href = 'https://maps.app.goo.gl/u7fZfQeebo26GX416';
+            link.target = '_blank';
+            link.rel = 'noopener noreferrer';
+            while (h.firstChild) link.appendChild(h.firstChild);
+            h.appendChild(link);
         }
     });
 
