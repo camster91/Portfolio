@@ -22,6 +22,8 @@ jobs:
         run: php tests/sort-test.php
       - name: Colour artist and landing contracts
         run: php tests/artist-shortcode-test.php
+      - name: Colour navigation permissions
+        run: php tests/colour-navigation-test.php
       - name: Build release archive
         run: bash scripts/build-plugin.sh
       - name: Verify release boundary

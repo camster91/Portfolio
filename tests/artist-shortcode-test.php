@@ -221,9 +221,11 @@ if ( false !== strpos( $style_source, '.motomotus-container--artist .motomotus-i
 $plugin_source = file_get_contents( dirname( __DIR__ ) . '/motomotus-portfolio.php' );
 $global_script = file_get_contents( dirname( __DIR__ ) . '/assets/js/global-fixes.js' );
 $global_style  = file_get_contents( dirname( __DIR__ ) . '/assets/css/global-fixes.css' );
-$logo_asset    = dirname( __DIR__ ) . '/assets/images/arketype-logo.png';
-if ( false === strpos( $plugin_source, "'arketypeLogoUrl'" ) || false === strpos( $global_script, 'a[href*="/home/"]' ) || false === strpos( $global_script, 'MOTOMOTUS × ARKETYPE home' ) || false === strpos( $global_script, 'motomotus-lockup-x' ) || false === strpos( $global_script, 'motomotus-arketype-logo' ) || ! is_file( $logo_asset ) || filesize( $logo_asset ) < 100 ) {
-    fwrite( STDERR, "The shared Colour-page ARKETYPE logo treatment is incomplete.\n" );
+// The revised logo is self-contained vector artwork. Reject executable or
+// external content in the asset included in the release archive.
+$logo = simplexml_load_file( dirname( __DIR__ ) . '/assets/images/colour-lockup.svg' );
+if ( ! $logo || 'svg' !== $logo->getName() || $logo->xpath( '//*[local-name()="script" or local-name()="foreignObject"]' ) || $logo->xpath( '//@href | //@*[starts-with(local-name(), "on")]' ) ) {
+    fwrite( STDERR, "The Colour lockup must contain only self-contained SVG artwork.\n" );
     exit( 1 );
 }
 

@@ -138,20 +138,22 @@ body:has(.motomotus-container) {
     overflow-x: clip;
 }
 
-/* Keep the shared Colour frame stable on pages with different content heights. */
-html:has(body.motomotus-colour-context) {
-    scrollbar-gutter: stable;
-    /* Elementor sizes its stretched mobile menu from clientWidth. Reserve the
-       vertical scrollbar on short drafts so its links do not jump. */
-    overflow-y: scroll;
-}
-
-body.motomotus-colour-context {
+body.motomotus-colour-context,
+body.page-id-9 {
     overflow-x: clip;
+    /* A short artist or draft page still gets the natural scrollbar used by
+       Work, so viewport units and the full-width grid share one origin. */
+    min-height: calc(100vh + 1px);
 }
 
-body.motomotus-colour-context .elementor-location-header {
-    min-height: 105px;
+/* Use one wordmark size on Info, Work and every Colour page. The shared
+   header template then keeps their logo and navigation geometry aligned. */
+body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup) {
+    height: auto !important;
+    max-width: none !important;
+    width: 150px !important;
 }
 
 /* Astra's default page title and content margins otherwise push non-Elementor
@@ -170,43 +172,36 @@ body.motomotus-colour-artist-context .entry-content {
     padding-top: 10px;
 }
 
-/* Approved MOTOMOTUS × ARKETYPE lockup for every Colour landing/artist page. */
-.motomotus-colour-logo-link {
-    --motomotus-colour-lockup-width: 112px;
-    align-items: center;
-    display: inline-flex !important;
-    flex-direction: column;
-    min-height: 85px;
-    width: max-content !important;
-}
-
-.motomotus-colour-logo-link > img:not(.motomotus-arketype-logo) {
-    display: block !important;
-    height: auto !important;
-    max-width: var(--motomotus-colour-lockup-width) !important;
-    width: var(--motomotus-colour-lockup-width) !important;
-}
-
-.motomotus-lockup-x {
+/* Keep Chuck's card grid at the same origin and row rhythm as Work. The
+   headline occupies Work's otherwise empty space above the first row. */
+body.page-id-3634 .motomotus-container--artist .motomotus-page-title {
     align-items: center;
     display: flex;
-    font-family: 'Zilando 2', sans-serif;
-    font-size: 9px;
-    font-weight: 500;
-    height: 11px;
+    height: 70px;
     justify-content: center;
-    line-height: 1;
-    margin: 1px 0;
-    width: var(--motomotus-colour-lockup-width);
+    min-height: 0;
 }
 
-.motomotus-arketype-logo {
-    display: block !important;
-    height: auto !important;
-    margin: 0 !important;
-    max-width: var(--motomotus-colour-lockup-width) !important;
-    width: var(--motomotus-colour-lockup-width) !important;
+body.page-id-3634 .motomotus-container--artist .motomotus-info {
+    min-height: 0;
 }
+
+/* The supplied combined artwork uses the original wordmark's width and
+   top-left origin. Its larger ARKETYPE band stays outside the layout flow. */
+.motomotus-colour-logo-link { position: relative; }
+.motomotus-colour-logo-link > img:not(.motomotus-colour-lockup) { visibility: hidden; }
+img.motomotus-colour-lockup {
+    display: none !important;
+    height: auto !important;
+    left: 0;
+    margin: 0 !important;
+    max-width: none !important;
+    position: absolute;
+    top: 0;
+    width: 150px !important;
+}
+.motomotus-colour-logo-link > img.motomotus-colour-lockup { display: block !important; }
+.motomotus-colour-nav a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
 /* Reusable Colour landing layout. Page content owns the labels and links. */
 .motomotus-colour-landing {
@@ -218,7 +213,7 @@ body.motomotus-colour-artist-context .entry-content {
     font-family: 'Zilando 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     justify-content: center;
     margin-left: calc(50% - 50vw);
-    min-height: calc(100vh - 105px);
+    min-height: calc(100vh - 81px);
     padding: clamp(90px, 15vh, 180px) 40px 80px;
     width: 100vw;
 }
@@ -262,23 +257,31 @@ body.motomotus-colour-artist-context .entry-content {
     outline-offset: 6px;
 }
 
+@media (max-width: 1024px) {
+    body.page-id-3634 .motomotus-container--artist .motomotus-page-title {
+        height: 106px;
+    }
+}
+
 @media (max-width: 768px) {
-    body.motomotus-colour-context .elementor-location-header {
-        min-height: 91px;
+    body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+    body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+    body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup) {
+        width: 174px !important;
     }
 
-    .motomotus-colour-logo-link {
-        --motomotus-colour-lockup-width: 90px;
-        min-height: 72px;
+    .motomotus-colour-logo-link > img.motomotus-colour-lockup {
+        width: 174px !important;
     }
 
-    .motomotus-lockup-x {
-        font-size: 8px;
-        height: 9px;
+    body.page-id-3634 .motomotus-container--artist .motomotus-page-title {
+        height: 26px;
+        min-height: 0 !important;
+        transform: translateY(20px);
     }
 
     .motomotus-colour-landing {
-        min-height: calc(100vh - 91px);
+        min-height: calc(100vh - 105px);
         padding: 80px 20px 60px;
     }
 

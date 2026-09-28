@@ -1,39 +1,58 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Add the approved MOTOMOTUS × ARKETYPE lockup to all Colour landing and
-    // artist pages. CSS reserves the final height before this enhancement runs
-    // so the header cannot jump when the supplied artwork is inserted.
     const isColourPage = document.body.classList.contains('motomotus-colour-context') ||
                          document.body.classList.contains('page-id-3632') ||
                          Boolean(document.querySelector('.motomotus-container--artist'));
-    const arketypeLogoUrl = window.motomotusSiteConfig && window.motomotusSiteConfig.arketypeLogoUrl;
+    const siteConfig = window.motomotusSiteConfig || {};
 
-    if (isColourPage && arketypeLogoUrl) {
-        document.querySelectorAll('a[href*="/home/"]').forEach(link => {
-            if (!link.querySelector('img')) {
-                return;
-            }
+    // Preserve the existing wordmark's layout box while the supplied lockup
+    // extends below it. This keeps the menu and first grid row stationary.
+    if (isColourPage && siteConfig.colourLogoUrl) {
+        document.querySelectorAll('.elementor-location-header a[href*="/home/"]').forEach(link => {
+            const logo = link.querySelector('img');
+            if (!logo || link.querySelector('.motomotus-colour-lockup')) return;
+            const lockup = document.createElement('img');
+            lockup.className = 'motomotus-colour-lockup';
+            lockup.alt = 'Motomotus / Arketype';
+            lockup.width = 5630;
+            lockup.height = 3886;
+            lockup.decoding = 'sync';
+            // Keep the original visible if the replacement cannot load.
+            lockup.addEventListener('load', () => link.classList.add('motomotus-colour-logo-link'));
+            lockup.addEventListener('error', () => lockup.remove());
+            lockup.src = siteConfig.colourLogoUrl;
+            link.appendChild(lockup);
+            const syncWidth = () => {
+                const width = logo.getBoundingClientRect().width;
+                if (width > 0) lockup.style.setProperty('width', `${width}px`, 'important');
+            };
+            syncWidth();
+            if ('ResizeObserver' in window) new ResizeObserver(syncWidth).observe(logo);
+            else window.addEventListener('resize', syncWidth, { passive: true });
+        });
+    }
 
-            if (link.querySelector('.motomotus-arketype-logo')) {
-                return;
-            }
-
-            link.classList.add('motomotus-colour-logo-link');
-            link.setAttribute('aria-label', 'MOTOMOTUS × ARKETYPE home');
-            const mark = document.createElement('span');
-            mark.className = 'motomotus-lockup-x';
-            mark.textContent = '×';
-            mark.setAttribute('aria-hidden', 'true');
-
-            const logo = document.createElement('img');
-            logo.className = 'motomotus-arketype-logo';
-            logo.src = arketypeLogoUrl;
-            logo.alt = '';
-            logo.width = 800;
-            logo.height = 123;
-            logo.decoding = 'sync';
-            logo.fetchPriority = 'high';
-            link.appendChild(mark);
-            link.appendChild(logo);
+    // PHP supplies a draft preview only to users who may edit Colour; the
+    // public route is supplied automatically once that page is published.
+    if (siteConfig.colourNavUrl) {
+        document.querySelectorAll('.e-n-menu-heading, .mm-custom-nav').forEach(menu => {
+            if (menu.querySelector('.motomotus-colour-nav')) return;
+            const info = Array.from(menu.querySelectorAll('a')).find(a => a.textContent.trim().toUpperCase() === 'INFO');
+            if (!info) return;
+            const original = info.closest('.e-n-menu-item') || info;
+            const item = original.cloneNode(true);
+            item.classList.add('motomotus-colour-nav');
+            [item, ...item.querySelectorAll('*')].forEach(el => {
+                el.removeAttribute('id');
+                el.removeAttribute('aria-current');
+                el.classList.remove('e-current');
+            });
+            const anchor = item.matches('a') ? item : item.querySelector('a');
+            anchor.href = siteConfig.colourNavUrl;
+            const label = anchor.querySelector('.e-n-menu-title-text') || anchor;
+            label.textContent = 'COLOUR';
+            if (document.body.classList.contains('page-id-3632')) anchor.setAttribute('aria-current', 'page');
+            original.before(item);
+            menu.querySelectorAll('.e-n-menu-title-container').forEach((a, index) => a.dataset.focusIndex = String(index + 1));
         });
     }
 
