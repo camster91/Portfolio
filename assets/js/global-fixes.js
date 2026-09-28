@@ -1,39 +1,42 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // Add the approved MOTOMOTUS × ARKETYPE lockup to all Colour landing and
-    // artist pages. CSS reserves the final height before this enhancement runs
-    // so the header cannot jump when the supplied artwork is inserted.
+    // Keep the shared MOTOMOTUS wordmark identical to Work. Add only the
+    // client-supplied ARKETYPE strip below it, outside the header layout flow.
     const isColourPage = document.body.classList.contains('motomotus-colour-context') ||
                          document.body.classList.contains('page-id-3632') ||
                          Boolean(document.querySelector('.motomotus-container--artist'));
-    const arketypeLogoUrl = window.motomotusSiteConfig && window.motomotusSiteConfig.arketypeLogoUrl;
+    const siteConfig = window.motomotusSiteConfig || {};
+    const logoAssetUrl = siteConfig.colourLogoUrl || siteConfig.arketypeLogoUrl;
+    const stripUrl = logoAssetUrl && logoAssetUrl.replace(/[^/]+$/, 'arketype-strip.svg');
 
-    if (isColourPage && arketypeLogoUrl) {
+    if (isColourPage && stripUrl) {
         document.querySelectorAll('a[href*="/home/"]').forEach(link => {
-            if (!link.querySelector('img')) {
-                return;
-            }
-
-            if (link.querySelector('.motomotus-arketype-logo')) {
+            const logo = link.querySelector('img');
+            if (!logo || link.querySelector('.motomotus-arketype-strip')) {
                 return;
             }
 
             link.classList.add('motomotus-colour-logo-link');
-            link.setAttribute('aria-label', 'MOTOMOTUS × ARKETYPE home');
-            const mark = document.createElement('span');
-            mark.className = 'motomotus-lockup-x';
-            mark.textContent = '×';
-            mark.setAttribute('aria-hidden', 'true');
+            const strip = document.createElement('img');
+            strip.className = 'motomotus-arketype-strip';
+            strip.src = stripUrl;
+            strip.alt = '';
+            strip.width = 5630;
+            strip.height = 700;
+            strip.decoding = 'sync';
+            link.appendChild(strip);
 
-            const logo = document.createElement('img');
-            logo.className = 'motomotus-arketype-logo';
-            logo.src = arketypeLogoUrl;
-            logo.alt = '';
-            logo.width = 800;
-            logo.height = 123;
-            logo.decoding = 'sync';
-            logo.fetchPriority = 'high';
-            link.appendChild(mark);
-            link.appendChild(logo);
+            const syncStripWidth = () => {
+                const width = logo.getBoundingClientRect().width;
+                if (width > 0) {
+                    strip.style.setProperty('width', `${width}px`, 'important');
+                }
+            };
+            syncStripWidth();
+            if ('ResizeObserver' in window) {
+                new ResizeObserver(syncStripWidth).observe(logo);
+            } else {
+                window.addEventListener('resize', syncStripWidth, { passive: true });
+            }
         });
     }
 

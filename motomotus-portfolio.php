@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Motomotus Portfolio
  * Description: A robust, accessible portfolio system for managing and presenting Motomotus work.
- * Version: 1.4.11
+ * Version: 1.4.18
  * Author: Motomotus
  * Text Domain: motomotus
  * License: MIT
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define constants
 if ( ! defined( 'MOTOMOTUS_VERSION' ) ) {
-    define( 'MOTOMOTUS_VERSION', '1.4.11' );
+    define( 'MOTOMOTUS_VERSION', '1.4.18' );
 }
 if ( ! defined( 'MOTOMOTUS_PATH' ) ) {
     define( 'MOTOMOTUS_PATH', plugin_dir_path( __FILE__ ) );
@@ -169,7 +169,7 @@ function motomotus_global_fixes_enqueue() {
             'motomotus-global-fixes',
             'motomotusSiteConfig',
             array(
-                'arketypeLogoUrl' => MOTOMOTUS_URL . 'assets/images/arketype-logo.png',
+                'colourLogoUrl' => MOTOMOTUS_URL . 'assets/images/Moto_dark.svg',
             )
         );
     }
