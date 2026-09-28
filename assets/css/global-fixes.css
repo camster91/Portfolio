@@ -264,6 +264,12 @@ img.motomotus-colour-lockup {
 }
 
 @media (max-width: 768px) {
+    /* The larger lockup extends below the original header image. Clear it
+       on every artist page, including Beatrice's two-line mobile title. */
+    body.motomotus-colour-artist-context .motomotus-page-title {
+        transform: translateY(20px);
+    }
+
     body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
     body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
     body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup) {
