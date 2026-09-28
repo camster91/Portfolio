@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Motomotus Portfolio
  * Description: A robust, accessible portfolio system for managing and presenting Motomotus work.
- * Version: 1.4.20
+ * Version: 1.4.21
  * Author: Motomotus
  * Text Domain: motomotus
  * License: MIT
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Define constants
 if ( ! defined( 'MOTOMOTUS_VERSION' ) ) {
-    define( 'MOTOMOTUS_VERSION', '1.4.20' );
+    define( 'MOTOMOTUS_VERSION', '1.4.21' );
 }
 if ( ! defined( 'MOTOMOTUS_PATH' ) ) {
     define( 'MOTOMOTUS_PATH', plugin_dir_path( __FILE__ ) );

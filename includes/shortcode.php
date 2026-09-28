@@ -24,7 +24,7 @@ add_shortcode( 'motomotus_colour_landing', 'motomotus_colour_landing_shortcode' 
 function motomotus_colour_landing_shortcode( $atts ) {
     $atts = shortcode_atts(
         array(
-            'heading'      => 'Representing Arketype Colourists',
+            'heading'      => 'Colour',
             'chuck_label'  => 'Chuck',
             'chuck_url'    => '/chuck/',
             'beatrice_label' => 'Beatrice Tremblay',
