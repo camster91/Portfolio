@@ -128,6 +128,18 @@ iframe,
     opacity: 0.8;
 }
 
+.motomotus-address-link {
+    color: inherit;
+    font: inherit;
+    text-decoration: none;
+}
+
+.motomotus-address-link:focus-visible,
+.elementor-location-header a[href*="/home/"]:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+}
+
 body {
     background-color: #e2e2e2 !important;
 }
@@ -225,7 +237,8 @@ img.motomotus-colour-lockup {
 }
 
 /* Keep a semantic page title without the removed visible introduction. */
-.motomotus-colour-landing__heading {
+.motomotus-colour-landing__heading,
+.motomotus-accessible-heading {
     position: absolute;
     width: 1px;
     height: 1px;
