@@ -148,9 +148,9 @@ body.page-id-9 {
 
 /* Use one wordmark size on Info, Work and every Colour page. The shared
    header template then keeps their logo and navigation geometry aligned. */
-body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-arketype-strip),
-body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-arketype-strip),
-body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-arketype-strip) {
+body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup) {
     height: auto !important;
     max-width: none !important;
     width: 150px !important;
@@ -186,21 +186,22 @@ body.page-id-3634 .motomotus-container--artist .motomotus-info {
     min-height: 0;
 }
 
-/* The shared wordmark keeps Work's exact image, size and header geometry. */
-.motomotus-colour-logo-link {
-    position: relative;
-}
-
-.motomotus-colour-logo-link > img.motomotus-arketype-strip {
-    display: block !important;
-    height: auto;
+/* The supplied combined artwork uses the original wordmark's width and
+   top-left origin. Its larger ARKETYPE band stays outside the layout flow. */
+.motomotus-colour-logo-link { position: relative; }
+.motomotus-colour-logo-link > img:not(.motomotus-colour-lockup) { visibility: hidden; }
+img.motomotus-colour-lockup {
+    display: none !important;
+    height: auto !important;
     left: 0;
     margin: 0 !important;
     max-width: none !important;
     position: absolute;
-    top: calc(100% + 2px);
-    width: 124px !important;
+    top: 0;
+    width: 150px !important;
 }
+.motomotus-colour-logo-link > img.motomotus-colour-lockup { display: block !important; }
+.motomotus-colour-nav a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
 
 /* Reusable Colour landing layout. Page content owns the labels and links. */
 .motomotus-colour-landing {
@@ -263,20 +264,20 @@ body.page-id-3634 .motomotus-container--artist .motomotus-info {
 }
 
 @media (max-width: 768px) {
-    body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-arketype-strip),
-    body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-arketype-strip),
-    body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-arketype-strip) {
+    body.page-id-9 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+    body.page-id-11 .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup),
+    body.motomotus-colour-context .elementor-location-header a[href*="/home/"] > img:not(.motomotus-colour-lockup) {
         width: 174px !important;
     }
 
-    .motomotus-colour-logo-link > img.motomotus-arketype-strip {
+    .motomotus-colour-logo-link > img.motomotus-colour-lockup {
         width: 174px !important;
     }
 
     body.page-id-3634 .motomotus-container--artist .motomotus-page-title {
         height: 26px;
         min-height: 0 !important;
-        transform: translateY(8px);
+        transform: translateY(20px);
     }
 
     .motomotus-colour-landing {
